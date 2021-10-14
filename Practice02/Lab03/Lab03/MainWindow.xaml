@@ -23,7 +23,7 @@
         </Grid.RowDefinitions>
 
         <TextBox BorderThickness="0" FontSize="50" HorizontalAlignment="Center" Foreground="Red" Grid.ColumnSpan="4">Calculator</TextBox>
-        <TextBox BorderThickness="0" FontSize="50" Grid.Column="5" HorizontalAlignment="Left" Grid.ColumnSpan="4">History</TextBox>
+        <TextBox BorderThickness="0" FontSize="50" Grid.Column="5" HorizontalAlignment="Center" Grid.ColumnSpan="4">History</TextBox>
 
         <TextBox x:Name="txtInput1" Grid.Row="1" Grid.ColumnSpan="4" FontSize="40" VerticalAlignment="Center" ></TextBox>
         <TextBox x:Name="txtInput2" Grid.Row="2" Grid.ColumnSpan="4" FontSize="40" VerticalAlignment="Center" ></TextBox>
