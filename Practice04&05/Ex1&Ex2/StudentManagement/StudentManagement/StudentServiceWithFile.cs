@@ -33,15 +33,10 @@ namespace StudentManagement
 
         public IList<Student> SearchStudent(string keyword, string hutechClass)
         {
-            var result = m_students.Where(s => s.Class == hutechClass && (s.firstname == keyword || s.lastname == keyword))
-                               .OrderBy(s => s.firstname)
-                               .Select(s => s.firstname + " " + s.lastname + " - " + s.studentId);
+            var result = m_students.Where(s => (s.Class == hutechClass || string.IsNullOrEmpty(hutechClass)) && (s.firstname == keyword || hutechClass == null) && (s.firstname == keyword || s.lastname == keyword || string.IsNullOrEmpty(keyword)))
+                                   .OrderBy(s => s.firstname).ToList();
 
-            foreach (var s in result)
-            {
-                Console.WriteLine(s);
-            }
-            return m_students;
+            return result;
         }
 
         public void UpdateOrCreateStudent(Student student)

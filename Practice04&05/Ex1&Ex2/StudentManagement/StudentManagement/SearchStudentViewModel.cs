@@ -1,15 +1,11 @@
-﻿using HelloWpfApp;
-using StudentManagement;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
-
+using System.Text.Json.Serialization;
+using static StudentManagement.IStudentService;
+using HelloWpfApp;
 
 namespace StudentManagement
 {
@@ -23,7 +19,6 @@ namespace StudentManagement
             public string email { get; set; }
             public string gender { get; set; }
             public string Class { get; set; }
-            public decimal gpa { get; set; }
         }
         private string m_searchKeyword;
         public string SearchKeyword
@@ -46,6 +41,8 @@ namespace StudentManagement
             }
         }
         private Student m_selectedStudent;
+        private object m_studentSrv;
+
         public Student SelectedStudent
         {
             get => m_selectedStudent;
@@ -63,17 +60,37 @@ namespace StudentManagement
             window1.DataContext = StudentDetailViewModel1;
             window1.ShowDialog();
         }
+        public void DoReset()
+        {
+            Students.Clear();
+            SearchKeyword = null;
+            SelectedClass = null;
+        }
+        private void DoSearch()
+        {
+            Students.Clear();
+            var result = m_studentsSrv.SearchStudent(SearchKeyword, SelectedClass);
+            foreach (var s in result)
+            {
+                Students.Add(s);
+            }
+        }
 
         public ObservableCollection<Student> Students { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand ResetCommand { get; set; }
         public ICommand OpenDetailCommand { get; set; }
+        
+        private IStudentService m_studentsSrv;
+
         public SearchStudentViewModel()
         {
-            var jsonString = File.ReadAllText("Student_Data.json");
-            var students = JsonSerializer.Deserialize<List<Student>>(jsonString);
-            Students = new ObservableCollection<Student>(students);
+            m_studentsSrv = new StudentServiceWithEF();
+            Students = new ObservableCollection<Student>(m_studentsSrv.SearchStudent(string.Empty, string.Empty));
             OpenDetailCommand = new ConditionalCommand(x => DoOpenDetail());
+            SearchCommand = new ConditionalCommand(x => DoSearch());
+            ResetCommand = new ConditionalCommand(x => DoReset());
+
         }
     }
 }
