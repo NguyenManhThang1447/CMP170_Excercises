@@ -1,0 +1,111 @@
+﻿<Window x:Class="Final_Project.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Final_Project"
+        mc:Ignorable="d"
+        Title="Customer Management" Height="480" Width="800" Background="LightPink" >
+    <Window.DataContext>
+        <local:SearchCustomerViewModel></local:SearchCustomerViewModel>
+    </Window.DataContext>
+    <Window.Resources>
+        <DataTemplate x:Key="myTaskTemplate">
+            <Border Name="border" BorderBrush="White" Background="LightPink" BorderThickness="1"
+          Padding="5" Margin="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Foreground="White" Text="ID:"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Foreground="White" Text="{Binding Path=id}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Foreground="White" Text="Full Name:"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Foreground="White" Text="{Binding Path=fullname}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Foreground="White" Text="Market Place:"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Foreground="White" Text="{Binding Path=marketplace}" />
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <Style x:Key="StyleTextbox"  TargetType="TextBox">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontFamily" Value="TimeNewRoman"/>
+            <Setter Property="FontSize" Value="25"/>
+        </Style>
+
+        <Style x:Key="LabelContent" TargetType="Label">
+            <Setter Property="FontFamily" Value="TimeNewRoman"/>
+            <Setter Property="FontSize" Value="25"/>
+        </Style>
+
+        <Style x:Key="StyleButton" TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontFamily" Value="TimeNewRoman"/>
+        </Style>
+
+        <Style x:Key="StyleCombobox" TargetType="ComboBox">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontFamily" Value="TimeNewRoman"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"  HorizontalAlignment="Center" Foreground="White" FontSize="20">Welcome To Customer Management</TextBlock>
+        <Border Grid.Row="1" Margin="5" BorderBrush="White" Background="LightPink" BorderThickness="3">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"></ColumnDefinition>
+                    <ColumnDefinition Width="150"></ColumnDefinition>
+                    <ColumnDefinition Width="150"></ColumnDefinition>
+                    <ColumnDefinition ></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Border Margin="5" BorderBrush="White" Grid.Column="0" Grid.RowSpan="2" BorderThickness= "2" >
+                    <Grid Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Foreground="White"  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" Content="Search Customers" />
+                        <Image Grid.Row="1" Source="/Search1-removebg-preview.png"></Image>
+                    </Grid>
+                </Border>
+                <ComboBox Grid.Column="1" BorderBrush="White" Margin="9" Foreground="LightPink" Style="{StaticResource StyleCombobox}" SelectedValue="{Binding Path=Selectedmarketplace}" SelectedValuePath="Content">
+                    <ComboBoxItem IsSelected="True">Marker Place</ComboBoxItem>
+                    <ComboBoxItem>Lazada</ComboBoxItem>
+                    <ComboBoxItem>Shopee</ComboBoxItem>
+                    <ComboBoxItem>Tiki</ComboBoxItem>
+                </ComboBox>
+                <TextBox Style="{StaticResource StyleTextbox}" Grid.Column="2" Grid.ColumnSpan="4" FontStretch="Medium" Margin="10" Height="30" VerticalAlignment="Center" Background="White" BorderBrush="White" Text="{Binding Path=SearchKeyword}" ></TextBox>
+                <Button Style="{StaticResource StyleButton}" Grid.Row="1" Grid.Column="1" Content="Search" Margin="9" Foreground="LightPink" Background="White" BorderBrush="White" Command="{Binding SearchCommand}" ></Button>
+                <Button Style="{StaticResource StyleButton}" Grid.Row="1" Grid.Column="2" Content="Reset" Margin="9" Foreground="LightPink" Background="White" BorderBrush="White" Command="{Binding ResetCommand}"></Button>
+                <Button Style="{StaticResource StyleButton}" Command="{Binding OpenDetailCommand}" Grid.Row="1" Grid.Column="3" Content="Open Customer Detail" Margin="9" Foreground="LightPink" Background="White" BorderBrush="White" ></Button>
+            </Grid>
+        </Border>
+        <Border Grid.Row="2" Margin="5">
+            <Grid >
+                <ListBox 
+                    MaxHeight="280" HorizontalContentAlignment="Stretch" BorderThickness="2" Background="LightPink" BorderBrush="White" ItemsSource="{Binding Customers}" ItemTemplate="{StaticResource myTaskTemplate}" SelectedItem="{Binding SelectedCustomer}"  >
+                </ListBox>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
